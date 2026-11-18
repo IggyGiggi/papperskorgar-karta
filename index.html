@@ -44,14 +44,18 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,att
 const cluster=L.markerClusterGroup({chunkedLoading:true,showCoverageOnHover:false,maxClusterRadius:45,disableClusteringAtZoom:18});
 const markers=[]; const byType=new Map();
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function popup(p){
+function getColor(status){
+    return '#28a745';
+}
+  
+ function popup(p){
  const osm=`https://www.openstreetmap.org/?mlat=${p.lat}&mlon=${p.lon}#map=19/${p.lat}/${p.lon}`;
  const google=`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lon}`;
  return `<div class="popup-title">${esc(p.typ||'Papperskorg')}</div><div class="popup-grid"><b>gid</b><span>${esc(p.gid)}</span><b>Latitud</b><span>${p.lat}</span><b>Longitud</b><span>${p.lon}</span>${p.anm?`<b>Anmärkning</b><span>${esc(p.anm)}</span>`:''}</div><div class="popup-actions"><a href="${google}" target="_blank" rel="noopener">Navigera</a><a href="${osm}" target="_blank" rel="noopener">Öppna karta</a></div>`;
 }
 for(const f of data.features){
  const p=f.properties; const [lon,lat]=f.geometry.coordinates;
- const icon=L.divIcon({className:'',html:'<div class="dot"></div>',iconSize:[17,17],iconAnchor:[8,8]});
+const icon=L.divIcon({className:'',html:`<div class="dot" style="background:${getColor()}"></div>`,iconSize:[17,17],iconAnchor:[8,8]});
  const m=L.marker([lat,lon],{icon,title:`${p.typ} ${p.gid}`}).bindPopup(popup(p)); m.feature=f; markers.push(m); cluster.addLayer(m);
  if(p.typ) byType.set(p.typ,(byType.get(p.typ)||0)+1);
 }
