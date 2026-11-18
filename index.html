@@ -42,7 +42,7 @@ setTimeout(()=>map.invalidateSize(),300);
 window.addEventListener('load',()=>{
   setTimeout(()=>map.invalidateSize(true),1000);
 });
-  if(markers.length) map.setView([55.605,13.0038],12);
+
 L.control.zoom({position:'bottomright'}).addTo(map);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap-bidragsgivare'}).addTo(map);
 const cluster=L.markerClusterGroup({chunkedLoading:true,showCoverageOnHover:false,maxClusterRadius:45,disableClusteringAtZoom:18});
