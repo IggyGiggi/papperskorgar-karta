@@ -41,7 +41,7 @@ const map=L.map('map',{zoomControl:false}).setView([55.605,13.0038],12);
 setTimeout(()=>map.invalidateSize(),300);
 window.addEventListener('load',()=>{
   setTimeout(()=>map.invalidateSize(true),1000);
-});
+if(markers.length) map.setView([55.605,13.0038],12);
 L.control.zoom({position:'bottomright'}).addTo(map);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap-bidragsgivare'}).addTo(map);
 const cluster=L.markerClusterGroup({chunkedLoading:true,showCoverageOnHover:false,maxClusterRadius:45,disableClusteringAtZoom:18});
@@ -52,7 +52,7 @@ function popup(p){
  const google=`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lon}`;
  const status=p.status||'Ej angiven';
  const priority=p.prioritet||'Ej angiven';
- const photo=p.foto?`<div class="popup-actions"><a href="${esc(p.foto)}" target="_blank" rel="noopener">Visa foto</a></div>`:'';
+ else if(found.length) map.fitBounds(cluster.getBounds(),{padding:[30,30],maxZoom:16});
  return `<div class="popup-title">${esc(p.typ||'Papperskorg')}</div><div class="popup-grid"><b>Status</b><span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${getColor(p.status)};margin-right:6px"></span>${esc(status)}</span><b>Prioritet</b><span>${esc(priority)}</span><b>gid</b><span>${esc(p.gid)}</span><b>Latitud</b><span>${p.lat}</span><b>Longitud</b><span>${p.lon}</span>${p.anm?`<b>Anmärkning</b><span>${esc(p.anm)}</span>`:''}</div>${photo}<div class="popup-actions"><a href="${google}" target="_blank" rel="noopener">Navigera</a><a href="${osm}" target="_blank" rel="noopener">Öppna karta</a></div>`;
 }
 for(const f of data.features){
@@ -61,7 +61,8 @@ for(const f of data.features){
  const m=L.marker([lat,lon],{icon,title:`${p.typ} ${p.gid}`}).bindPopup(popup(p)); m.feature=f; markers.push(m); cluster.addLayer(m);
  if(p.typ) byType.set(p.typ,(byType.get(p.typ)||0)+1);
 }
-map.addLayer(cluster); if(markers.length) map.fitBounds(cluster.getBounds(),{padding:[30,30]});
+map.addLayer(cluster);
+if(markers.length) map.setView([55.605,13.0038],12);
 const typeFilter=document.getElementById('typeFilter');
 [...byType.entries()].sort((a,b)=>a[0].localeCompare(b[0],'sv')).forEach(([t,n])=>{const o=document.createElement('option');o.value=t;o.textContent=`${t} (${n})`;typeFilter.appendChild(o);});
 const status=document.getElementById('status'); status.textContent=`Visar ${markers.length.toLocaleString('sv-SE')} papperskorgar. Klicka på en punkt för detaljer.`;
