@@ -48,11 +48,25 @@ const cluster=L.markerClusterGroup({chunkedLoading:true,showCoverageOnHover:fals
 const markers=[]; const byType=new Map();
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function popup(p){
- const osm=`https://www.openstreetmap.org/?mlat=${p.lat}&mlon=${p.lon}#map=19/${p.lat}/${p.lon}`;
- const google=`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lon}`;
- const status=p.status||'Ej angiven';
- const priority=p.prioritet||'Ej angiven';
- return `<div class="popup-title">${esc(p.typ||'Papperskorg')}</div><div class="popup-grid"><b>Status</b><span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${getColor(p.status)};margin-right:6px"></span>${esc(status)}</span><b>Prioritet</b><span>${esc(priority)}</span><b>gid</b><span>${esc(p.gid)}</span><b>Latitud</b><span>${p.lat}</span><b>Longitud</b><span>${p.lon}</span>${p.anm?`<b>Anmärkning</b><span>${esc(p.anm)}</span>`:''}</div>${photo}<div class="popup-actions"><a href="${google}" target="_blank" rel="noopener">Navigera</a><a href="${osm}" target="_blank" rel="noopener">Öppna karta</a></div>`;
+  const osm=`https://www.openstreetmap.org/?mlat=${p.lat}&mlon=${p.lon}#map=19/${p.lat}/${p.lon}`;
+  const google=`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lon}`;
+  const status=p.status||'Ej angiven';
+  const priority=p.prioritet||'Ej angiven';
+
+  return `
+    <div class="popup-title">${esc(p.typ || 'Papperskorg')}</div>
+    <div class="popup-grid">
+      <b>Status</b><span>${esc(status)}</span>
+      <b>Prioritet</b><span>${esc(priority)}</span>
+      <b>gid</b><span>${esc(p.gid)}</span>
+      <b>Latitud</b><span>${p.lat}</span>
+      <b>Longitud</b><span>${p.lon}</span>
+    </div>
+    <div class="popup-actions">
+      <a href="${google}" target="_blank">Navigera</a>
+      <a href="${osm}" target="_blank">Öppna karta</a>
+    </div>
+  `;
 }
 for(const f of data.features){
  const p=f.properties; const [lon,lat]=f.geometry.coordinates;
