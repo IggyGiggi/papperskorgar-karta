@@ -64,7 +64,7 @@ function popup(p){
       <b>Longitud</b><span>${p.lon}</span>
     </div>
 
-<select>
+<select id="statusSelect">
 <br><br>
   <option>Ej tömd</option>
   <option>Sönder</option>
@@ -76,8 +76,7 @@ function popup(p){
   <option>Saknas</option>
 </select>
 <br><br>
-<button onclick="alert('Spara fungerar!')">💾 Spara status</button>
-
+<button onclick="alert(document.getElementById('statusSelect').value)">💾 Spara status</button>
     <div class="popup-actions">
       <a href="${google}" target="_blank">Navigera</a>
       <a href="${osm}" target="_blank">Öppna karta</a>
