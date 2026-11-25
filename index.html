@@ -95,18 +95,16 @@ function popup(p){
     </div>
   `;
 }
-for(const f of data.features){
-  const p=f.properties;
-  console.log(p);
-
 const match = statusData.find(
     s => s.title === p.typ
-);  
+);
 
-  if(match){
+console.log("typ=", p.typ, "title=", p.title, "match=", match);
+
+if(match){
     p.status = match.status;
     p.prioritet = match.prioritet;
-  }
+}
 
   const [lon,lat]=f.geometry.coordinates;
  const icon=L.divIcon({className:'',html:'<div class="dot"></div>',iconSize:[17,17],iconAnchor:[8,8]});
