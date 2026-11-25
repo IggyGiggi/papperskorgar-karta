@@ -97,6 +97,7 @@ function popup(p){
 }
 for(const f of data.features){
   const p=f.properties;
+  console.log(p);
 
 const match = statusData.find(
     s => s.title === p.typ
